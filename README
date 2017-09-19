@@ -1,0 +1,21 @@
+1D convolution program using the Convolution Theorem via Discrete Fourier Transforms
+
+The FFTW3 library is required for the DFT and IDFT transforms.
+
+h(x) = (f*g)(x)
+f(x) : Function to convolve
+g(x) : Kernel Gaussian function used for the convolution
+h(x) : Function resulting from the convolution
+
+Compile with:
+  gfortran 1D_DFT_convolution.f90 -fdefault-real-8 -fdefault-integer-8 -Ofast -ffree-line-length-none -I/usr/include -lfftw3 -o 1D_DFT_convolution
+
+Plot function with the python script
+  python3 python/1D_plots.py
+
+Distributed under the GNU GENERAL PUBLIC LICENSE.
+
+Useful link: www.aip.de/groups/soe/local/numres/bookfpdf/f13-1.pdf
+
+Author: B. Font Garcia
+September 2017
