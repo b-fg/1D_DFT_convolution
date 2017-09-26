@@ -142,20 +142,20 @@ contains
 		allocate(h_padk(l/2+1))
 
 		f_pad(-n/2:n/2-1) = f       ! Padded and centered function
-		f_pad(:-n/2-1) = f(1)       ! Extend f to the boundaries to avoid convolution effects in there. Comment to avoid this.
-		f_pad(n/2:) = f(n)          ! Extend f to the boundaries to avoid convolution effects in there. Comment to avoid this.
+		f_pad(:-n/2-1) = f(1)       ! Extend f to the boundaries to avoid convolution effects in there. Comment this line otherwise.
+		f_pad(n/2:) = f(n)          ! Extend f to the boundaries to avoid convolution effects in there. Comment this line otherwise.
 
 		g_pad(n/2:) = g(1:m/2)      ! Padded and rearrange kernel array to obtain sorted array after convolution
 		g_pad(:-n/2) = g(m/2+1:)    ! See this useful link: www.aip.de/groups/soe/local/numres/bookfpdf/f13-1.pdf
 
-		write(*,*) ' - Performing DFTS...'
+		write(*,*) ' - Performing DFTs of padded f and g...'
 		f_padk = FFT_1D(f_pad)      ! Transform function to Fourier space
 		g_padk = FFT_1D(g_pad)      ! Transform kernel to Fourier space
 
 		write(*,*) ' - Pointwise multiplication...'
 		h_padk = f_padk*g_padk*l    ! Scale with l
 
-		write(*,*) ' - Performing IDFT...'
+		write(*,*) ' - Performing IDFT of padded h...'
 		h_padx = IFFT_1D(h_padk)    ! Transform back to physical space
 
 		h = h_padx(-n/2:n/2-1)      ! Trim padded parts
