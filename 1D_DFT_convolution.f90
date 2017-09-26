@@ -62,8 +62,8 @@ program DFT_convolution
 	complex, parameter :: img = (0.d0,1.d0)    ! sqrt(-1) value
 	real, parameter    :: pi = 4.*ATAN(1.)
 	! Parameters
-	integer, parameter :: n = 256		     ! Function f size
-	integer, parameter :: m = 16         ! Kernel g size
+	integer, parameter :: n = 32		     ! Function f size
+	integer, parameter :: m = 9          ! Kernel g size
 	real, parameter    :: sigma = 0.3    ! Kernel standard deviation
 	! Useful variables
 	integer :: i
@@ -75,11 +75,20 @@ program DFT_convolution
 
 	write(*,*) 'Creating arbitrary function and Gaussian kernel...'
 	! Create arbitrary 1D function
-	f = 0
-	do i = 1,n
-		if (i.gt.n/3+1.and.i.le.n/3+1+n/3/2) f(i) = 1.
-		if (i.ge.n/3+1+n/3/2.and.i.le.2*n/3-1) f(i) = 0.5
-	end do
+	! Option 1
+	! f = 0
+	! do i = 1,n
+	! 	if (i.gt.n/3+1.and.i.le.n/3+1+n/3/2) f(i) = 1.
+	! 	if (i.ge.n/3+1+n/3/2.and.i.le.2*n/3-1) f(i) = 0.5
+	! end do
+
+	! Option 2
+	f = 1
+	f(n/3:2*n/3) = 0.
+
+	! Option 3
+	! Add your own
+
 	! Create Gaussian kernel
 	g = 0
 	do i = 1,m
@@ -133,7 +142,10 @@ contains
 		allocate(h_padk(l/2+1))
 
 		f_pad(-n/2:n/2-1) = f       ! Padded and centered function
-		g_pad(n/2-1:) = g(1:m/2)    ! Padded and rearrange kernel array to obtain sorted array after convolution
+		f_pad(:-n/2-1) = f(1)       ! Extend f to the boundaries to avoid convolution effects in there. Comment to avoid this.
+		f_pad(n/2:) = f(n)          ! Extend f to the boundaries to avoid convolution effects in there. Comment to avoid this.
+
+		g_pad(n/2:) = g(1:m/2)      ! Padded and rearrange kernel array to obtain sorted array after convolution
 		g_pad(:-n/2) = g(m/2+1:)    ! See this useful link: www.aip.de/groups/soe/local/numres/bookfpdf/f13-1.pdf
 
 		write(*,*) ' - Performing DFTS...'
