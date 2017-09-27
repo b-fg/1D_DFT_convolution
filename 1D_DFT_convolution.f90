@@ -62,8 +62,8 @@ program DFT_convolution
 	complex, parameter :: img = (0.d0,1.d0)    ! sqrt(-1) value
 	real, parameter    :: pi = 4.*ATAN(1.)
 	! Parameters
-	integer, parameter :: n = 32		     ! Function f size
-	integer, parameter :: m = 9          ! Kernel g size
+	integer, parameter :: n = 32		     ! Function f size (even number)
+	integer, parameter :: m = 9          ! Kernel g size (odd number)
 	real, parameter    :: sigma = 0.3    ! Kernel standard deviation
 	! Useful variables
 	integer :: i
@@ -84,7 +84,7 @@ program DFT_convolution
 
 	! Option 2
 	f = 1
-	f(n/3:2*n/3) = 0.
+	f(n/3+1:2*n/3+1) = 0.
 
 	! Option 3
 	! Add your own
@@ -112,7 +112,7 @@ program DFT_convolution
 	write(*,*) 'Writing convolution ouput...'
 	write(12,'(a)') 'i x f(x) h(x)'
 	do i = 1,n
-		write(12,'(i4,3f12.4)') i, real(i), f(i), h(i)
+		write(12,'(i4,3f12.4)') i, real(i)-1, f(i), h(i)
 		flush(12)
 	end do
 

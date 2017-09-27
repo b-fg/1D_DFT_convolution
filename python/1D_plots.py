@@ -45,7 +45,7 @@ def plot1D(data, file):
 
     # Set limits
     ax.set_xlim(min(x), max(x))
-    ax.set_ylim(min(y), max(y))
+    ax.set_ylim(min(y), max(y)*1.2)
 
     # Make the plot square --------
     fwidth = fig.get_figwidth()
